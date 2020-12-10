@@ -1,0 +1,138 @@
+= Route API
+:toc:
+
+
+== Add Route
+
+POST /route/add
+
+=== Request Body
+
+[source,json]
+----
+{
+  "app": "sample-app",
+  "path": "/",
+  "upstreams": [
+    "192.168.10.1:8080",
+    "192.168.10.1:8081",
+    "192.168.10.1:8082",
+    "192.168.10.1:8083"
+  ],
+  "protocol": "http",
+  "lb": "round-robin",
+  "health-check": {
+    "mode": "active",
+    "period": "10",
+    "timeout": "1",
+    "path": "/status"
+  },
+  "plugins": [
+    {
+      "plugin": "limit-count",
+      "max_conn_num": "1000",
+      "max_req_freq": "1000"
+    }
+  ],
+  "access-control": {
+    "allow": {
+      "relation": "and",
+      "roles": [],
+      "apps": [],
+      "ip_list": []
+    },
+    "forbidden": {
+      "relation": "and",
+      "roles": [],
+      "ip_list": []
+    }
+  },
+  "endpoints": [
+    {
+      "path": "/user/info",
+      "method": "get"
+    }
+  ]
+}
+----
+
+
+== Delete Route
+
+POST /route/delete
+
+=== Request Body
+
+[source,json]
+----
+["sample-app"]
+----
+
+
+== Refresh Route
+
+GET /route/full-reload
+
+=== Request Body
+
+empty
+
+
+== Query Route
+
+GET /route/query
+
+=== Request Body
+
+empty
+
+=== Response Body
+
+[source,json]
+----
+{
+    "sample-app": {
+        "upstreams": [
+            "192.168.10.1:8080",
+            "192.168.10.1:8081"
+        ],
+        "plugins": [
+            {
+                "max_conn_num": "1000",
+                "plugin": "limit-count",
+                "max_req_freq": "1000"
+            }
+        ],
+        "path": "/",
+        "protocol": "http",
+        "access-control": {
+            "allow": {
+                "apps": {},
+                "relation": "and",
+                "roles": {},
+                "ip_list": {}
+            },
+            "forbidden": {
+                "relation": "and",
+                "roles": {},
+                "ip_list": {}
+            }
+        },
+        "endpoints": [
+            {
+                "path": "/user/info",
+                "method": "get"
+            }
+        ],
+        "app": "sample-app",
+        "health-check": {
+            "period": "10",
+            "path": "/status",
+            "mode": "active",
+            "timeout": "1"
+        },
+        "lb": "round-robin"
+    }
+}
+----
+

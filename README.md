@@ -100,6 +100,8 @@ now, make a post HTTP request on `${ip}/route/add`,and body is as follows:
 ```
 ### Step 4: check the response and load-balance
 
+for details API,reference doc [document API](/route-crud.adoc).
+
 for example,running a spring-boot web application. expose endpoint at `/sample-app/create`,
 
 ```java
